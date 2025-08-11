@@ -5,7 +5,7 @@ import (
 	"errors"
 	"time"
 
-	"github.com/IrinaFosteeva/User_system_Layered/models"
+	"github.com/IrinaFosteeva/User_system_layered/models"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 

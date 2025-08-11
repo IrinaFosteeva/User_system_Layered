@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 
-	"github.com/IrinaFosteeva/User_system_Layered/models"
-	"github.com/IrinaFosteeva/User_system_Layered/repository"
+	"github.com/IrinaFosteeva/User_system_layered/models"
+	"github.com/IrinaFosteeva/User_system_layered/repository"
 )
 
 var (
