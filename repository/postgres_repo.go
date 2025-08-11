@@ -57,20 +57,20 @@ func (r *PostgresUserRepo) GetByID(ctx context.Context, id int) (models.User, er
 }
 
 func (r *PostgresUserRepo) Create(ctx context.Context, u models.User) (models.User, error) {
-	now := time.Now()
+	now := time.Now().Truncate(time.Second)
 	var id int
 	err := r.db.QueryRow(ctx, `INSERT INTO users (name, email, created_at, updated_at) VALUES ($1,$2,$3,$4) RETURNING id`, u.Name, u.Email, now, now).Scan(&id)
 	if err != nil {
 		return models.User{}, err
 	}
 	u.ID = id
-	u.CreatedAt = now
-	u.UpdatedAt = now
+	u.CreatedAt = models.JSONTime(now)
+	u.UpdatedAt = models.JSONTime(now)
 	return u, nil
 }
 
 func (r *PostgresUserRepo) Update(ctx context.Context, u models.User) (models.User, error) {
-	now := time.Now()
+	now := time.Now().Truncate(time.Second)
 	cmdTag, err := r.db.Exec(ctx, `UPDATE users SET name=$1, email=$2, updated_at=$3 WHERE id=$4`, u.Name, u.Email, now, u.ID)
 	if err != nil {
 		return models.User{}, err
@@ -78,7 +78,7 @@ func (r *PostgresUserRepo) Update(ctx context.Context, u models.User) (models.Us
 	if cmdTag.RowsAffected() == 0 {
 		return models.User{}, ErrNotFound
 	}
-	u.UpdatedAt = now
+	u.UpdatedAt = models.JSONTime(now)
 	return u, nil
 }
 
