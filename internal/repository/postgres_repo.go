@@ -3,9 +3,9 @@ package repository
 import (
 	"context"
 	"errors"
+	"github.com/IrinaFosteeva/User_system_layered/internal/models"
 	"time"
 
-	"github.com/IrinaFosteeva/User_system_layered/models"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 

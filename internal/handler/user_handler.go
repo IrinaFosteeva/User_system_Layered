@@ -2,10 +2,10 @@ package handler
 
 import (
 	"encoding/json"
+	"github.com/IrinaFosteeva/User_system_layered/internal/service"
 	"net/http"
 	"strconv"
 
-	"github.com/IrinaFosteeva/User_system_layered/service"
 	"github.com/gorilla/mux"
 )
 

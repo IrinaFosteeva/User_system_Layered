@@ -3,9 +3,8 @@ package service
 import (
 	"context"
 	"errors"
-
-	"github.com/IrinaFosteeva/User_system_layered/models"
-	"github.com/IrinaFosteeva/User_system_layered/repository"
+	"github.com/IrinaFosteeva/User_system_layered/internal/models"
+	"github.com/IrinaFosteeva/User_system_layered/internal/repository"
 )
 
 var (
