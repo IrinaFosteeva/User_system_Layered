@@ -4,28 +4,44 @@
 CRUD для сущности `User` (create, read, update, delete) с хранением в PostgreSQL.
 
 ## Структура
+
 ```
 / (root)
-  go.mod
-  main.go
-  .env.example
-  docker-compose.yml
+  /config
+    config.go
   /db
+    db.go
     migrations.sql
-  /models
-    user.go
-  /repository
-    postgres_repo.go
-  /service
-    user_service.go
-  /handler
-    user_handler.go
+  /server
+    server.go
+  /internal
+   /custom_errors
+      errors.go
+   /handler
+      user_handler.go
+   /models
+      user.go
+   /repository
+      postgres_repo.go
+   /service
+      user_service.go
+   go.mod
+   main.go
+   .env.example
+   docker-compose.yml
+   
+  
+ 
+    
 ```
 
 ## Быстрый запуск (локально с Docker)
+
 1. Скопировать `.env.example` в `.env` и при необходимости изменить переменные.
 2. `docker-compose up -d` — запустит postgres на `localhost:5432`.
-3. Применить миграцию: `psql "postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable" -f db/migrations.sql` (или используйте любой клиент)
+3. Применить миграцию:
+   `psql "postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable" -f db/migrations.sql` (или используйте
+   любой клиент)
 4. `go run ./...` или `go run main.go`
 5. API:
     - GET  `/users` — список
@@ -35,9 +51,11 @@ CRUD для сущности `User` (create, read, update, delete) с хране
     - DELETE `/users/{id}` — удалить
 
 ## Docker compose
+
 `docker-compose.yml` содержит сервис Postgres (пользователь: postgres, пароль: postgres, БД: postgres)
 
 ## .env.example
+
 ```
 DB_HOST=localhost
 DB_PORT=5432
@@ -46,5 +64,6 @@ DB_PASS=postgres
 DB_NAME=postgres
 PORT=8080
 ```
+
 ---
 
