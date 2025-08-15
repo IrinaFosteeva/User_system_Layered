@@ -2,22 +2,12 @@ package repository
 
 import (
 	"context"
-	"errors"
+	"github.com/IrinaFosteeva/User_system_layered/internal/custom_errors"
 	"github.com/IrinaFosteeva/User_system_layered/internal/models"
 	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
-
-var ErrNotFound = errors.New("not found")
-
-type UserRepository interface {
-	GetAll(ctx context.Context) ([]models.User, error)
-	GetByID(ctx context.Context, id int) (models.User, error)
-	Create(ctx context.Context, u models.User) (models.User, error)
-	Update(ctx context.Context, u models.User) (models.User, error)
-	Delete(ctx context.Context, id int) error
-}
 
 type PostgresUserRepo struct {
 	db *pgxpool.Pool
@@ -51,7 +41,7 @@ func (r *PostgresUserRepo) GetByID(ctx context.Context, id int) (models.User, er
 	row := r.db.QueryRow(ctx, `SELECT id, name, email, created_at, updated_at FROM users WHERE id=$1`, id)
 	err := row.Scan(&u.ID, &u.Name, &u.Email, &u.CreatedAt, &u.UpdatedAt)
 	if err != nil {
-		return models.User{}, ErrNotFound
+		return models.User{}, custom_errors.ErrNotFound
 	}
 	return u, nil
 }
@@ -76,7 +66,7 @@ func (r *PostgresUserRepo) Update(ctx context.Context, u models.User) (models.Us
 		return models.User{}, err
 	}
 	if cmdTag.RowsAffected() == 0 {
-		return models.User{}, ErrNotFound
+		return models.User{}, custom_errors.ErrNotFound
 	}
 	u.UpdatedAt = models.JSONTime(now)
 	return u, nil
@@ -88,7 +78,7 @@ func (r *PostgresUserRepo) Delete(ctx context.Context, id int) error {
 		return err
 	}
 	if cmdTag.RowsAffected() == 0 {
-		return ErrNotFound
+		return custom_errors.ErrNotFound
 	}
 	return nil
 }

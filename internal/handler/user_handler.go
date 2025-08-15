@@ -2,7 +2,8 @@ package handler
 
 import (
 	"encoding/json"
-	"github.com/IrinaFosteeva/User_system_layered/internal/service"
+	"github.com/IrinaFosteeva/User_system_layered/internal/custom_errors"
+	"github.com/IrinaFosteeva/User_system_layered/internal/interfaces"
 	"net/http"
 	"strconv"
 
@@ -10,10 +11,10 @@ import (
 )
 
 type UserHandler struct {
-	svc *service.UserService
+	svc interfaces.MainUserService
 }
 
-func NewUserHandler(s *service.UserService) *UserHandler {
+func NewUserHandler(s interfaces.MainUserService) *UserHandler {
 	return &UserHandler{svc: s}
 }
 
@@ -58,7 +59,7 @@ func (h *UserHandler) Create(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	user, err := h.svc.Create(ctx, in.Name, in.Email)
 	if err != nil {
-		if err == service.ErrInvalidInput {
+		if err == custom_errors.ErrInvalidInput {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
@@ -81,7 +82,7 @@ func (h *UserHandler) Update(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	user, err := h.svc.Update(ctx, id, in.Name, in.Email)
 	if err != nil {
-		if err == service.ErrInvalidInput {
+		if err == custom_errors.ErrInvalidInput {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}

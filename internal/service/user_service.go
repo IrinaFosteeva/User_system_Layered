@@ -2,20 +2,16 @@ package service
 
 import (
 	"context"
-	"errors"
+	"github.com/IrinaFosteeva/User_system_layered/internal/custom_errors"
+	"github.com/IrinaFosteeva/User_system_layered/internal/interfaces"
 	"github.com/IrinaFosteeva/User_system_layered/internal/models"
-	"github.com/IrinaFosteeva/User_system_layered/internal/repository"
-)
-
-var (
-	ErrInvalidInput = errors.New("invalid input")
 )
 
 type UserService struct {
-	repo repository.UserRepository
+	repo interfaces.UserRepository
 }
 
-func NewUserService(r repository.UserRepository) *UserService {
+func NewUserService(r interfaces.UserRepository) *UserService {
 	return &UserService{repo: r}
 }
 
@@ -29,7 +25,7 @@ func (s *UserService) GetByID(ctx context.Context, id int) (models.User, error) 
 
 func (s *UserService) Create(ctx context.Context, name, email string) (models.User, error) {
 	if name == "" || email == "" {
-		return models.User{}, ErrInvalidInput
+		return models.User{}, custom_errors.ErrInvalidInput
 	}
 	user := models.User{Name: name, Email: email}
 	return s.repo.Create(ctx, user)
@@ -37,7 +33,7 @@ func (s *UserService) Create(ctx context.Context, name, email string) (models.Us
 
 func (s *UserService) Update(ctx context.Context, id int, name, email string) (models.User, error) {
 	if name == "" || email == "" {
-		return models.User{}, ErrInvalidInput
+		return models.User{}, custom_errors.ErrInvalidInput
 	}
 	user := models.User{ID: id, Name: name, Email: email}
 	return s.repo.Update(ctx, user)
